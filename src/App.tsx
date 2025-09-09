@@ -4,7 +4,7 @@ import { Experience } from './scene/Experience'
 function App() {
   return (
     <div className="app">
-      <Canvas className="canvas" shadows dpr={[1, 2]} camera={{ position: [7, 5.5, 7], fov: 40 }}>
+      <Canvas className="canvas" shadows dpr={[1, 2]} camera={{ position: [10, 7.5, 10], fov: 40 }}>
         <Experience />
       </Canvas>
 
