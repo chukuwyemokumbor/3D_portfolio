@@ -3,6 +3,13 @@ import { palette } from './palette'
 import { Room } from './Room'
 import { Desk } from './Desk'
 import { Chair } from './Chair'
+import { Monitor } from './props/Monitor'
+import { Lamp } from './props/Lamp'
+import { Mug } from './props/Mug'
+import { Bookshelf } from './props/Bookshelf'
+import { Plant } from './props/Plant'
+import { Poster } from './props/Poster'
+import { Phone } from './props/Phone'
 
 /** Everything inside the 3D canvas. */
 export function Experience() {
@@ -16,6 +23,13 @@ export function Experience() {
       <Room />
       <Desk />
       <Chair />
+      <Monitor />
+      <Lamp />
+      <Mug />
+      <Bookshelf />
+      <Plant />
+      <Poster />
+      <Phone />
 
       <OrbitControls target={[0, 1, 0]} />
     </>
