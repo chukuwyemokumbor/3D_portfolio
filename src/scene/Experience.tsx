@@ -1,6 +1,7 @@
 import { OrbitControls } from '@react-three/drei'
 import { palette } from './palette'
 import { Room } from './Room'
+import { Lights } from './Lights'
 import { Desk } from './Desk'
 import { Chair } from './Chair'
 import { Monitor } from './props/Monitor'
@@ -17,8 +18,7 @@ export function Experience() {
     <>
       <color attach="background" args={[palette.background]} />
 
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 8, 4]} intensity={1.4} />
+      <Lights />
 
       <Room />
       <Desk />

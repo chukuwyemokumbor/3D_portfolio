@@ -2,6 +2,7 @@
 export const palette = {
   background: '#f3ecff',
   floor: '#ffb84c',
+  floorLine: '#f29e2e',
   wallBack: '#7b6cf6',
   wallLeft: '#4cc9f0',
   trim: '#ffffff',

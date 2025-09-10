@@ -17,7 +17,7 @@ export function Monitor() {
       {/* Bezel and screen */}
       <mesh position={[0, 0.62, 0]} castShadow>
         <boxGeometry args={[1.2, 0.72, 0.05]} />
-        <meshStandardMaterial color={palette.monitorFrame} />
+        <meshStandardMaterial color={palette.monitorFrame} roughness={0.4} metalness={0.3} />
       </mesh>
       <mesh position={[0, 0.62, 0.027]}>
         <planeGeometry args={[1.12, 0.64]} />

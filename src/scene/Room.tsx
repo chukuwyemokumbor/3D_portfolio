@@ -1,25 +1,33 @@
 import { palette } from './palette'
 
+const PLANKS = Array.from({ length: 15 }, (_, i) => -3.5 + i * 0.5)
+
 /** Floor, two walls (a cut-away corner), a window and a rug. The room spans -4..4 on x and z. */
 export function Room() {
   return (
     <group>
-      {/* Floor slab */}
+      {/* Floor slab with plank lines */}
       <mesh position={[0, -0.1, 0]} receiveShadow>
         <boxGeometry args={[8, 0.2, 8]} />
-        <meshStandardMaterial color={palette.floor} />
+        <meshStandardMaterial color={palette.floor} roughness={0.8} />
       </mesh>
+      {PLANKS.map((x) => (
+        <mesh key={x} rotation-x={-Math.PI / 2} position={[x, 0.002, 0]} receiveShadow>
+          <planeGeometry args={[0.025, 8]} />
+          <meshStandardMaterial color={palette.floorLine} />
+        </mesh>
+      ))}
 
       {/* Back wall */}
       <mesh position={[0, 2, -4.1]} receiveShadow>
         <boxGeometry args={[8.4, 4, 0.2]} />
-        <meshStandardMaterial color={palette.wallBack} />
+        <meshStandardMaterial color={palette.wallBack} roughness={0.95} />
       </mesh>
 
       {/* Left wall */}
       <mesh position={[-4.1, 2, 0]} receiveShadow>
         <boxGeometry args={[0.2, 4, 8]} />
-        <meshStandardMaterial color={palette.wallLeft} />
+        <meshStandardMaterial color={palette.wallLeft} roughness={0.95} />
       </mesh>
 
       {/* Skirting boards */}
