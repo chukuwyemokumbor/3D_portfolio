@@ -28,25 +28,29 @@ function setHighlight(root: Object3D, on: boolean) {
 
 interface Props {
   section: Section
+  /** True while the camera is focused on this object. */
+  active: boolean
+  onSelect: (section: Section) => void
   children: ReactNode
 }
 
 /** Wraps an object in the room: pointer cursor, glow and a label on hover, plus a floating marker. */
-export function Hotspot({ section, children }: Props) {
+export function Hotspot({ section, active, onSelect, children }: Props) {
   const group = useRef<Group>(null)
   const marker = useRef<Mesh>(null)
   const [hovered, setHovered] = useState(false)
-  useCursor(hovered)
+  const showHover = hovered && !active
+  useCursor(showHover)
 
   useEffect(() => {
-    if (group.current) setHighlight(group.current, hovered)
-  }, [hovered])
+    if (group.current) setHighlight(group.current, showHover)
+  }, [showHover])
 
   useFrame(({ clock }, delta) => {
     const m = marker.current
     if (!m) return
     m.position.y = section.anchor[1] + Math.sin(clock.elapsedTime * 2 + section.anchor[0]) * 0.06
-    const target = hovered ? 1.4 : 1
+    const target = active ? 0 : hovered ? 1.4 : 1
     m.scale.setScalar(m.scale.x + (target - m.scale.x) * (1 - Math.exp(-10 * delta)))
   })
 
@@ -58,13 +62,17 @@ export function Hotspot({ section, children }: Props) {
         setHovered(true)
       }}
       onPointerOut={() => setHovered(false)}
+      onClick={(e) => {
+        e.stopPropagation()
+        onSelect(section)
+      }}
     >
       {children}
       <mesh ref={marker} position={section.anchor}>
         <sphereGeometry args={[0.07, 20, 20]} />
         <meshBasicMaterial color={palette.accent} />
       </mesh>
-      {hovered && (
+      {showHover && (
         <Html position={section.anchor} center zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
           <div className="label">{section.label}</div>
         </Html>

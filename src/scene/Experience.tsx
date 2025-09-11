@@ -13,9 +13,21 @@ import { Poster } from './props/Poster'
 import { Phone } from './props/Phone'
 import { Hotspot } from './Hotspot'
 import { SECTION } from '../data/sections'
+import type { SectionId } from '../types/section'
+
+interface Props {
+  active: SectionId | null
+  onSelect: (id: SectionId) => void
+}
 
 /** Everything inside the 3D canvas. */
-export function Experience() {
+export function Experience({ active, onSelect }: Props) {
+  const hotspot = (id: SectionId) => ({
+    section: SECTION[id],
+    active: active === id,
+    onSelect: () => onSelect(id),
+  })
+
   return (
     <>
       <color attach="background" args={[palette.background]} />
@@ -25,23 +37,23 @@ export function Experience() {
       <Room />
       <Desk />
       <Chair />
-      <Hotspot section={SECTION.projects}>
+      <Hotspot {...hotspot('projects')}>
         <Monitor />
       </Hotspot>
       <Lamp />
       <Mug />
-      <Hotspot section={SECTION.about}>
+      <Hotspot {...hotspot('about')}>
         <Bookshelf />
       </Hotspot>
       <Plant />
-      <Hotspot section={SECTION.skills}>
+      <Hotspot {...hotspot('skills')}>
         <Poster />
       </Hotspot>
-      <Hotspot section={SECTION.contact}>
+      <Hotspot {...hotspot('contact')}>
         <Phone />
       </Hotspot>
 
-      <CameraRig />
+      <CameraRig active={active} />
     </>
   )
 }

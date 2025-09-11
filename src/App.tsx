@@ -1,11 +1,30 @@
+import { useEffect, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Experience } from './scene/Experience'
+import type { SectionId } from './types/section'
 
 function App() {
+  const [active, setActive] = useState<SectionId | null>(null)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActive(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
     <div className="app">
-      <Canvas className="canvas" shadows flat dpr={[1, 2]} camera={{ position: [20, 15, 20], fov: 40 }}>
-        <Experience />
+      <Canvas
+        className="canvas"
+        shadows
+        flat
+        dpr={[1, 2]}
+        camera={{ position: [20, 15, 20], fov: 40 }}
+        onPointerMissed={() => setActive(null)}
+      >
+        <Experience active={active} onSelect={setActive} />
       </Canvas>
 
       <header className="hud">
@@ -13,7 +32,13 @@ function App() {
         <p className="hud__role">Frontend Developer</p>
       </header>
 
-      <p className="hint">Drag to look around · Scroll to zoom</p>
+      {active ? (
+        <button type="button" className="back" onClick={() => setActive(null)}>
+          ← Back to room
+        </button>
+      ) : (
+        <p className="hint">Drag to look around · Scroll to zoom · Click an object to explore</p>
+      )}
     </div>
   )
 }
