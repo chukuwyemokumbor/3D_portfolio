@@ -11,6 +11,8 @@ import { Bookshelf } from './props/Bookshelf'
 import { Plant } from './props/Plant'
 import { Poster } from './props/Poster'
 import { Phone } from './props/Phone'
+import { Hotspot } from './Hotspot'
+import { SECTION } from '../data/sections'
 
 /** Everything inside the 3D canvas. */
 export function Experience() {
@@ -23,13 +25,21 @@ export function Experience() {
       <Room />
       <Desk />
       <Chair />
-      <Monitor />
+      <Hotspot section={SECTION.projects}>
+        <Monitor />
+      </Hotspot>
       <Lamp />
       <Mug />
-      <Bookshelf />
+      <Hotspot section={SECTION.about}>
+        <Bookshelf />
+      </Hotspot>
       <Plant />
-      <Poster />
-      <Phone />
+      <Hotspot section={SECTION.skills}>
+        <Poster />
+      </Hotspot>
+      <Hotspot section={SECTION.contact}>
+        <Phone />
+      </Hotspot>
 
       <CameraRig />
     </>

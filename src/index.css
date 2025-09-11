@@ -82,3 +82,16 @@ button {
   pointer-events: none;
   white-space: nowrap;
 }
+
+/* ---------- 3D labels ---------- */
+.label {
+  transform: translateY(-34px);
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(29, 27, 58, 0.25);
+}
