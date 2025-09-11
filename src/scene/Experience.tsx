@@ -1,7 +1,7 @@
-import { OrbitControls } from '@react-three/drei'
 import { palette } from './palette'
 import { Room } from './Room'
 import { Lights } from './Lights'
+import { CameraRig } from './CameraRig'
 import { Desk } from './Desk'
 import { Chair } from './Chair'
 import { Monitor } from './props/Monitor'
@@ -31,7 +31,7 @@ export function Experience() {
       <Poster />
       <Phone />
 
-      <OrbitControls target={[0, 1, 0]} />
+      <CameraRig />
     </>
   )
 }
