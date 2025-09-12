@@ -7,7 +7,7 @@ export const SECTION = {
     id: 'projects',
     label: 'Projects',
     anchor: [MONITOR.x, MONITOR.y + 1.25, MONITOR.z],
-    view: { position: [MONITOR.x + 0.5, MONITOR.y + 1.0, MONITOR.z + 2.3], target: [MONITOR.x, MONITOR.y + 0.55, MONITOR.z] },
+    view: { position: [MONITOR.x + 0.6, MONITOR.y + 1.15, MONITOR.z + 2.7], target: [MONITOR.x, MONITOR.y + 0.55, MONITOR.z] },
   },
   about: {
     id: 'about',

@@ -15,6 +15,10 @@ interface Props {
   active: SectionId | null
 }
 
+const UP = new Vector3(0, 1, 0)
+/** Pans close-ups sideways (as a fraction of the camera distance) so the object sits left of the side panel. */
+const PANEL_SHIFT = 0.22
+
 /**
  * Orbit controls with limits, an intro fly-in, and fly-to close-ups for each section.
  * Dragging during a flight cancels it so the user is never fighting the camera.
@@ -27,7 +31,11 @@ export function CameraRig({ active }: Props) {
   const goal = useMemo(() => {
     if (!active) return HOME
     const { position, target } = SECTION[active].view
-    return { position: new Vector3(...position), target: new Vector3(...target) }
+    const p = new Vector3(...position)
+    const t = new Vector3(...target)
+    const right = t.clone().sub(p).cross(UP).normalize()
+    const shift = right.multiplyScalar(p.distanceTo(t) * PANEL_SHIFT)
+    return { position: p.add(shift), target: t.add(shift) }
   }, [active])
 
   useEffect(() => {

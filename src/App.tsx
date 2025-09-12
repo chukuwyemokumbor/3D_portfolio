@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Experience } from './scene/Experience'
 import type { SectionId } from './types/section'
+import { Panel } from './ui/Panel'
+import { profile } from './data/profile'
 
 function App() {
   const [active, setActive] = useState<SectionId | null>(null)
@@ -28,14 +30,17 @@ function App() {
       </Canvas>
 
       <header className="hud">
-        <h1 className="hud__name">My Portfolio</h1>
-        <p className="hud__role">Frontend Developer</p>
+        <h1 className="hud__name">{profile.name}</h1>
+        <p className="hud__role">{profile.role}</p>
       </header>
 
       {active ? (
-        <button type="button" className="back" onClick={() => setActive(null)}>
-          ← Back to room
-        </button>
+        <>
+          <button type="button" className="back" onClick={() => setActive(null)}>
+            ← Back to room
+          </button>
+          <Panel section={active} onClose={() => setActive(null)} />
+        </>
       ) : (
         <p className="hint">Drag to look around · Scroll to zoom · Click an object to explore</p>
       )}
