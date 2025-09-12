@@ -2,7 +2,7 @@ import { palette } from '../palette'
 import { MONITOR } from '../layout'
 
 /** Monitor, keyboard and mouse on the desk. */
-export function Monitor() {
+export function Monitor({ night }: { night: boolean }) {
   return (
     <group position={[MONITOR.x, MONITOR.y, MONITOR.z]}>
       {/* Stand */}
@@ -21,7 +21,7 @@ export function Monitor() {
       </mesh>
       <mesh position={[0, 0.62, 0.027]}>
         <planeGeometry args={[1.12, 0.64]} />
-        <meshStandardMaterial color={palette.screen} emissive={palette.screen} emissiveIntensity={0.6} />
+        <meshStandardMaterial color={palette.screen} emissive={palette.screen} emissiveIntensity={night ? 1.1 : 0.6} />
       </mesh>
       {/* Code-like lines on the screen */}
       {[0.2, 0.1, 0, -0.1, -0.2].map((y, i) => (

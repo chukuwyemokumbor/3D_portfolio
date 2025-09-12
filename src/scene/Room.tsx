@@ -3,7 +3,7 @@ import { palette } from './palette'
 const PLANKS = Array.from({ length: 15 }, (_, i) => -3.5 + i * 0.5)
 
 /** Floor, two walls (a cut-away corner), a window and a rug. The room spans -4..4 on x and z. */
-export function Room() {
+export function Room({ night }: { night: boolean }) {
   return (
     <group>
       {/* Floor slab with plank lines */}
@@ -40,7 +40,7 @@ export function Room() {
         <meshStandardMaterial color={palette.trim} />
       </mesh>
 
-      <Window />
+      <Window night={night} />
 
       {/* Rug with two stripes */}
       <group position={[0.4, 0.01, -1.2]}>
@@ -59,7 +59,7 @@ export function Room() {
   )
 }
 
-function Window() {
+function Window({ night }: { night: boolean }) {
   return (
     <group position={[-3.98, 2.3, 0.6]}>
       {/* Frame */}
@@ -70,7 +70,11 @@ function Window() {
       {/* Glass */}
       <mesh position={[0.04, 0, 0]}>
         <boxGeometry args={[0.02, 1.4, 1.8]} />
-        <meshStandardMaterial color="#caf0f8" emissive="#caf0f8" emissiveIntensity={0.35} />
+        <meshStandardMaterial
+          color={night ? palette.glassNight : palette.glassDay}
+          emissive={night ? palette.glassNight : palette.glassDay}
+          emissiveIntensity={night ? 0.8 : 0.35}
+        />
       </mesh>
       {/* Cross bars */}
       <mesh position={[0.06, 0, 0]}>

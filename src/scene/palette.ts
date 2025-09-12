@@ -1,6 +1,7 @@
 /** Every colour in the scene, in one place. A bright, playful palette. */
 export const palette = {
   background: '#f3ecff',
+  night: '#15132e',
   floor: '#ffb84c',
   floorLine: '#f29e2e',
   wallBack: '#7b6cf6',
@@ -24,4 +25,6 @@ export const palette = {
   posterAccent: '#ffd166',
   mug: '#ff5d8f',
   accent: '#ff5d8f',
+  glassDay: '#caf0f8',
+  glassNight: '#262a6b',
 } as const

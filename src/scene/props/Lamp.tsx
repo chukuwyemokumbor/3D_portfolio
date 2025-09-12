@@ -2,7 +2,7 @@ import { palette } from '../palette'
 import { LAMP } from '../layout'
 
 /** An angled desk lamp. */
-export function Lamp() {
+export function Lamp({ night }: { night: boolean }) {
   return (
     <group position={[LAMP.x, LAMP.y, LAMP.z]}>
       <mesh position={[0, 0.02, 0]} castShadow>
@@ -24,7 +24,7 @@ export function Lamp() {
       </mesh>
       <mesh position={[0.37, 0.53, 0]}>
         <sphereGeometry args={[0.04, 16, 16]} />
-        <meshStandardMaterial color={palette.lampLight} emissive={palette.lampLight} emissiveIntensity={1} />
+        <meshStandardMaterial color={palette.lampLight} emissive={palette.lampLight} emissiveIntensity={night ? 3 : 1} />
       </mesh>
     </group>
   )

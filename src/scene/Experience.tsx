@@ -16,12 +16,13 @@ import { SECTION } from '../data/sections'
 import type { SectionId } from '../types/section'
 
 interface Props {
+  night: boolean
   active: SectionId | null
   onSelect: (id: SectionId) => void
 }
 
 /** Everything inside the 3D canvas. */
-export function Experience({ active, onSelect }: Props) {
+export function Experience({ night, active, onSelect }: Props) {
   const hotspot = (id: SectionId) => ({
     section: SECTION[id],
     active: active === id,
@@ -32,15 +33,15 @@ export function Experience({ active, onSelect }: Props) {
     <>
       <color attach="background" args={[palette.background]} />
 
-      <Lights />
+      <Lights night={night} />
 
-      <Room />
+      <Room night={night} />
       <Desk />
       <Chair />
       <Hotspot {...hotspot('projects')}>
-        <Monitor />
+        <Monitor night={night} />
       </Hotspot>
-      <Lamp />
+      <Lamp night={night} />
       <Mug />
       <Hotspot {...hotspot('about')}>
         <Bookshelf />
