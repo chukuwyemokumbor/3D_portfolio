@@ -433,3 +433,69 @@ button {
   margin-bottom: 12px;
   font-size: 22px;
 }
+
+/* ---------- Phones ---------- */
+@media (max-width: 640px) {
+  .hud {
+    top: 12px;
+    left: 12px;
+    padding: 8px 12px;
+  }
+  .hud__name {
+    font-size: 17px;
+  }
+  .hud__role {
+    font-size: 13px;
+  }
+  .theme-toggle {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+  }
+  /* The panel becomes a bottom sheet; the back button moves out of its way. */
+  .back {
+    top: 12px;
+    right: 12px;
+    bottom: auto;
+    left: auto;
+    height: 36px;
+    padding: 0 14px;
+  }
+  .panel {
+    top: auto;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    max-height: 56%;
+    animation-name: sheet-in;
+  }
+  .panel__head {
+    padding: 14px 16px 10px;
+  }
+  .panel__title {
+    font-size: 19px;
+  }
+  .panel__body {
+    padding: 12px 16px 20px;
+  }
+  .hint {
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+    white-space: normal;
+    text-align: center;
+    font-size: 12px;
+  }
+  .label {
+    padding: 3px 9px;
+    font-size: 11px;
+    transform: translateY(-26px);
+  }
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}

@@ -6,6 +6,7 @@ import { Fallback } from './ui/Fallback'
 import { ErrorBoundary } from './ui/ErrorBoundary'
 import { profile } from './data/profile'
 import { hasWebGL } from './lib/webgl'
+import { useMediaQuery } from './lib/useMediaQuery'
 
 const Scene = lazy(() => import('./scene/Scene'))
 const webgl = hasWebGL()
@@ -14,6 +15,8 @@ function App() {
   const [active, setActive] = useState<SectionId | null>(null)
   const [night, setNight] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches)
   const [ready, setReady] = useState(false)
+  const compact = useMediaQuery('(max-width: 640px)')
+  const touch = useMediaQuery('(pointer: coarse)')
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -31,7 +34,14 @@ function App() {
     <ErrorBoundary fallback={<Fallback reason="The 3D room couldn't load on this device, so here's the classic version." />}>
       <div className="app" data-theme={night ? 'night' : 'day'}>
         <Suspense fallback={null}>
-          <Scene night={night} active={active} onSelect={setActive} onReady={() => setReady(true)} />
+          <Scene
+            night={night}
+            compact={compact}
+            touch={touch}
+            active={active}
+            onSelect={setActive}
+            onReady={() => setReady(true)}
+          />
         </Suspense>
 
         <header className="hud">
@@ -59,7 +69,11 @@ function App() {
             <Panel section={active} onClose={() => setActive(null)} />
           </>
         ) : (
-          <p className="hint">Drag to look around · Scroll to zoom · Click an object to explore</p>
+          <p className="hint">
+            {touch
+              ? 'Drag to look around · Pinch to zoom · Tap an object'
+              : 'Drag to look around · Scroll to zoom · Click an object to explore'}
+          </p>
         )}
 
         <Loader done={ready} />

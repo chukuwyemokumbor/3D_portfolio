@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { Html, useCursor } from '@react-three/drei'
 import type { Group, Mesh, MeshStandardMaterial, Object3D } from 'three'
 import type { Section } from '../types/section'
@@ -30,16 +30,20 @@ interface Props {
   section: Section
   /** True while the camera is focused on this object. */
   active: boolean
+  alwaysShowLabel: boolean
   onSelect: (section: Section) => void
   children: ReactNode
 }
 
 /** Wraps an object in the room: pointer cursor, glow and a label on hover, plus a floating marker. */
-export function Hotspot({ section, active, onSelect, children }: Props) {
+export function Hotspot({ section, active, alwaysShowLabel, onSelect, children }: Props) {
   const group = useRef<Group>(null)
   const marker = useRef<Mesh>(null)
   const [hovered, setHovered] = useState(false)
   const showHover = hovered && !active
+  // drei's <Html> moves its container once the canvas connects its events; a label mounted
+  // before that can end up empty, so wait until the event layer is connected.
+  const connected = useThree((s) => Boolean(s.events.connected))
   useCursor(showHover)
 
   useEffect(() => {
@@ -72,7 +76,7 @@ export function Hotspot({ section, active, onSelect, children }: Props) {
         <sphereGeometry args={[0.07, 20, 20]} />
         <meshBasicMaterial color={palette.accent} />
       </mesh>
-      {showHover && (
+      {connected && (showHover || alwaysShowLabel) && (
         <Html position={section.anchor} center zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
           <div className="label">{section.label}</div>
         </Html>
