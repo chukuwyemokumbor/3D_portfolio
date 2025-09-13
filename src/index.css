@@ -343,3 +343,93 @@ button {
   background: #ffffff;
   color: #1d1b3a;
 }
+
+/* ---------- Loading screen ---------- */
+.loader {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--bg);
+  color: var(--ink-2);
+  font-weight: 600;
+  transition: opacity 0.6s ease 0.2s;
+}
+.loader--done {
+  opacity: 0;
+  pointer-events: none;
+}
+.loader__cube {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff5d8f, #7b6cf6 55%, #4cc9f0);
+  animation: loader-spin 1.4s ease-in-out infinite;
+}
+@keyframes loader-spin {
+  50% {
+    transform: rotate(180deg) scale(0.8);
+    border-radius: 50%;
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loader__bar {
+  width: 160px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+.loader__bar span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  animation: loader-bar 1.2s ease-in-out infinite;
+}
+@keyframes loader-bar {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* ---------- 2D fallback ---------- */
+.fallback {
+  height: 100%;
+  overflow-y: auto;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+.fallback__header h1 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+}
+.fallback__role {
+  color: var(--ink-2);
+  font-size: 18px;
+}
+.fallback__note {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #ece6ff;
+  color: #4b3fc4;
+}
+.fallback__section {
+  margin-top: 36px;
+}
+.fallback__section h2 {
+  margin-bottom: 12px;
+  font-size: 22px;
+}
