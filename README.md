@@ -1,75 +1,87 @@
-# React + TypeScript + Vite
+# 3D Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive 3D portfolio built with React Three Fiber. Explore a colourful low-poly room and click the monitor, bookshelf, poster or phone to open my projects, about, skills and contact sections.
 
-Currently, two official plugins are available:
+![The 3D room by day](docs/screenshots/room-day.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Night mode | Projects close-up |
+| --- | --- |
+| ![The room at night with the desk lamp on](docs/screenshots/room-night.png) | ![Camera focused on the monitor with the projects panel open](docs/screenshots/projects.png) |
 
-## React Compiler
+<p align="center">
+  <img src="docs/screenshots/mobile.png" alt="The portfolio on a phone" width="280" />
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- **A hand-built 3D room**: every object is made from simple shapes in code (no model files to download)
+- **Clickable objects**: hover to highlight and label an object, click to fly the camera to a close-up and open its section
+  - Monitor → **Projects** · Bookshelf → **About me** · Poster → **Skills** · Phone → **Contact**
+- **Orbit controls with limits**: drag to look around and scroll or pinch to zoom, without ending up under the floor or behind a wall
+- **Intro fly-in** and smooth camera moves, using frame-rate-independent easing
+- **Day/night toggle**: eased lighting, with the desk lamp and monitor lighting the room at night. It follows your system theme on first visit.
+- **Loading screen**: three.js is loaded in its own chunk, so the first download stays small
+- **2D fallback**: browsers without WebGL (or a scene that fails to start) get a plain, fully readable version of the portfolio
+- **Responsive**: on phones the camera frames the room for a tall screen, panels become a bottom sheet, and labels stay visible because there's no hover
+- **Accessible**:
+  - a section menu and keyboard shortcuts (`1`–`4` to open, `←` / `→` to switch, `Esc` to go back)
+  - focus moves into panels and back to the menu
+  - respects `prefers-reduced-motion` (no fly-throughs or bobbing)
+  - a text description for the canvas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [React Three Fiber](https://r3f.docs.pmnd.rs/) and [drei](https://drei.docs.pmnd.rs/) on top of [three.js](https://threejs.org/)
+- [Vite](https://vite.dev/)
+- Plain CSS with custom properties
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+You need [Node.js](https://nodejs.org/) 20.19 or newer.
 
+```bash
+git clone https://github.com/chukuwyemokumbor/3D_portfolio.git
+cd 3D_portfolio
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Then open the URL it prints (usually http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Starts the development server |
+| `npm run build` | Type-checks and builds for production into `dist/` |
+| `npm run preview` | Serves the production build locally |
+| `npm run lint` | Runs ESLint |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Make it yours
 
+All the text lives in [`src/data/profile.ts`](src/data/profile.ts): name, role, about, skills, projects and contact links. Empty contact links are hidden.
+
+All the scene colours are in [`src/scene/palette.ts`](src/scene/palette.ts), and object positions are in [`src/scene/layout.ts`](src/scene/layout.ts).
+
+## Project structure
+
+```
+src/
+├── data/
+│   ├── profile.ts        Your content: bio, skills, projects, contact
+│   └── sections.ts       Which object opens which section, and its camera view
+├── lib/                  WebGL detection and a media-query hook
+├── scene/
+│   ├── Scene.tsx         The canvas (lazy-loaded)
+│   ├── Experience.tsx    Everything inside the canvas
+│   ├── CameraRig.tsx     Orbit limits, intro fly-in and fly-to close-ups
+│   ├── Hotspot.tsx       Hover glow, marker and label for clickable objects
+│   ├── Lights.tsx        Day/night lighting
+│   ├── Room.tsx, Desk.tsx, Chair.tsx
+│   ├── props/            Monitor, bookshelf, plant, lamp, poster, phone, mug
+│   ├── layout.ts         Shared positions
+│   └── palette.ts        Scene colours
+├── ui/                   Panel, section menu, loader, 2D fallback, error boundary
+├── types/
+├── App.tsx
+└── index.css
 ```
