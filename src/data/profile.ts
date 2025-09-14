@@ -3,8 +3,8 @@
  * Edit this file to change your name, bio, skills, projects and contact links.
  */
 export const profile = {
-  name: 'chukuwyemokumbor',
-  role: 'Frontend Developer',
+  /** Shown in the corner card and as the heading of the 2D fallback page. */
+  title: '3D Room View',
 
   // EDIT ME: write a few sentences in your own words.
   about: [

@@ -66,8 +66,7 @@ function App() {
         </Suspense>
 
         <header className="hud">
-          <h1 className="hud__name">{profile.name}</h1>
-          <p className="hud__role">{profile.role}</p>
+          <h1 className="hud__name">{profile.title}</h1>
         </header>
 
         <SectionNav ref={nav} active={active} onSelect={setActive} />

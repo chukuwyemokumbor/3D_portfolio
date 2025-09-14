@@ -58,7 +58,7 @@ Then open the URL it prints (usually http://localhost:5173).
 
 ## Make it yours
 
-All the text lives in [`src/data/profile.ts`](src/data/profile.ts): name, role, about, skills, projects and contact links. Empty contact links are hidden.
+All the text lives in [`src/data/profile.ts`](src/data/profile.ts): the title, about, skills, projects and contact links. Empty contact links are hidden.
 
 All the scene colours are in [`src/scene/palette.ts`](src/scene/palette.ts), and object positions are in [`src/scene/layout.ts`](src/scene/layout.ts).
 

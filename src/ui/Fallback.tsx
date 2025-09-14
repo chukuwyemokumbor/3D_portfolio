@@ -7,8 +7,7 @@ export function Fallback({ reason }: { reason: string }) {
   return (
     <main className="fallback">
       <header className="fallback__header">
-        <h1>{profile.name}</h1>
-        <p className="fallback__role">{profile.role}</p>
+        <h1>{profile.title}</h1>
         <p className="fallback__note">{reason}</p>
       </header>
       {SECTIONS.map((s) => (
