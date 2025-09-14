@@ -31,12 +31,14 @@ interface Props {
   /** True while the camera is focused on this object. */
   active: boolean
   alwaysShowLabel: boolean
+  /** Reduced motion: the marker doesn't bob. */
+  still: boolean
   onSelect: (section: Section) => void
   children: ReactNode
 }
 
 /** Wraps an object in the room: pointer cursor, glow and a label on hover, plus a floating marker. */
-export function Hotspot({ section, active, alwaysShowLabel, onSelect, children }: Props) {
+export function Hotspot({ section, active, alwaysShowLabel, still, onSelect, children }: Props) {
   const group = useRef<Group>(null)
   const marker = useRef<Mesh>(null)
   const [hovered, setHovered] = useState(false)
@@ -53,7 +55,7 @@ export function Hotspot({ section, active, alwaysShowLabel, onSelect, children }
   useFrame(({ clock }, delta) => {
     const m = marker.current
     if (!m) return
-    m.position.y = section.anchor[1] + Math.sin(clock.elapsedTime * 2 + section.anchor[0]) * 0.06
+    m.position.y = section.anchor[1] + (still ? 0 : Math.sin(clock.elapsedTime * 2 + section.anchor[0]) * 0.06)
     const target = active ? 0 : hovered ? 1.4 : 1
     m.scale.setScalar(m.scale.x + (target - m.scale.x) * (1 - Math.exp(-10 * delta)))
   })

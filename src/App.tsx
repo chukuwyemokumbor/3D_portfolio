@@ -1,6 +1,8 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { SectionId } from './types/section'
 import { Panel } from './ui/Panel'
+import { SectionNav, type SectionNavHandle } from './ui/SectionNav'
+import { SECTIONS } from './data/sections'
 import { Loader } from './ui/Loader'
 import { Fallback } from './ui/Fallback'
 import { ErrorBoundary } from './ui/ErrorBoundary'
@@ -17,14 +19,32 @@ function App() {
   const [ready, setReady] = useState(false)
   const compact = useMediaQuery('(max-width: 640px)')
   const touch = useMediaQuery('(pointer: coarse)')
+  const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+  const nav = useRef<SectionNavHandle>(null)
+
+  /** Close the panel and put keyboard focus back on that section's menu button. */
+  function close() {
+    if (active) nav.current?.focus(active)
+    setActive(null)
+  }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActive(null)
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const index = active ? SECTIONS.findIndex((s) => s.id === active) : -1
+      if (e.key === 'Escape' && active) {
+        nav.current?.focus(active)
+        setActive(null)
+      } else if (/^[1-4]$/.test(e.key)) {
+        setActive(SECTIONS[Number(e.key) - 1].id)
+      } else if (active && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+        const step = e.key === 'ArrowRight' ? 1 : -1
+        setActive(SECTIONS[(index + step + SECTIONS.length) % SECTIONS.length].id)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [active])
 
   if (!webgl) {
     return <Fallback reason="Your browser can't display the 3D room, so here's the classic version." />
@@ -38,6 +58,7 @@ function App() {
             night={night}
             compact={compact}
             touch={touch}
+            reducedMotion={reducedMotion}
             active={active}
             onSelect={setActive}
             onReady={() => setReady(true)}
@@ -48,6 +69,8 @@ function App() {
           <h1 className="hud__name">{profile.name}</h1>
           <p className="hud__role">{profile.role}</p>
         </header>
+
+        <SectionNav ref={nav} active={active} onSelect={setActive} />
 
         {!active && (
           <button
@@ -63,16 +86,16 @@ function App() {
 
         {active ? (
           <>
-            <button type="button" className="back" onClick={() => setActive(null)}>
+            <button type="button" className="back" onClick={close}>
               ← Back to room
             </button>
-            <Panel section={active} onClose={() => setActive(null)} />
+            <Panel section={active} onClose={close} />
           </>
         ) : (
           <p className="hint">
             {touch
               ? 'Drag to look around · Pinch to zoom · Tap an object'
-              : 'Drag to look around · Scroll to zoom · Click an object to explore'}
+              : 'Drag to look around · Scroll to zoom · Click an object or press 1–4'}
           </p>
         )}
 

@@ -20,16 +20,18 @@ interface Props {
   compact: boolean
   /** Touch screens can't hover, so labels stay visible. */
   touch: boolean
+  reducedMotion: boolean
   active: SectionId | null
   onSelect: (id: SectionId) => void
 }
 
 /** Everything inside the 3D canvas. */
-export function Experience({ night, compact, touch, active, onSelect }: Props) {
+export function Experience({ night, compact, touch, reducedMotion, active, onSelect }: Props) {
   const hotspot = (id: SectionId) => ({
     section: SECTION[id],
     active: active === id,
     alwaysShowLabel: touch && active === null,
+    still: reducedMotion,
     onSelect: () => onSelect(id),
   })
 
@@ -58,7 +60,7 @@ export function Experience({ night, compact, touch, active, onSelect }: Props) {
         <Phone />
       </Hotspot>
 
-      <CameraRig active={active} compact={compact} />
+      <CameraRig active={active} compact={compact} reducedMotion={reducedMotion} />
     </>
   )
 }

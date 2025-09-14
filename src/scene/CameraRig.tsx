@@ -26,13 +26,15 @@ interface Props {
   active: SectionId | null
   /** Narrow screen: wider lens, further back, bottom-sheet framing. */
   compact: boolean
+  /** Cut straight to each view instead of flying, and skip the intro. */
+  reducedMotion: boolean
 }
 
 /**
  * Orbit controls with limits, an intro fly-in, and fly-to close-ups for each section.
  * Dragging during a flight cancels it so the user is never fighting the camera.
  */
-export function CameraRig({ active, compact }: Props) {
+export function CameraRig({ active, compact, reducedMotion }: Props) {
   const controls = useRef<ComponentRef<typeof OrbitControls>>(null)
   const camera = useThree((s) => s.camera)
   const get = useThree((s) => s.get)
@@ -57,7 +59,7 @@ export function CameraRig({ active, compact }: Props) {
   }, [active, compact])
 
   useEffect(() => {
-    camera.position.copy(compact ? START_COMPACT : START)
+    if (!reducedMotion) camera.position.copy(compact ? START_COMPACT : START)
     controls.current?.target.copy(TARGET)
     // Only on mount; later layout changes animate from wherever the camera is.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +78,7 @@ export function CameraRig({ active, compact }: Props) {
   useFrame((_, delta) => {
     const c = controls.current
     if (!animating.current || !c) return
-    const t = 1 - Math.exp(-SPEED * delta)
+    const t = reducedMotion ? 1 : 1 - Math.exp(-SPEED * delta)
     camera.position.lerp(goal.position, t)
     c.target.lerp(goal.target, t)
     c.update()
